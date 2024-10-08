@@ -1,8 +1,9 @@
-"	### Set Utils ###"
+
 set number
 set mouse=a
 set noswapfile
 set nocompatible
+set ts=4
 
 "	### File for info to the fancy starter ###"
 set viminfo='100,n$HOME/.vim/files/info/viminfo
@@ -12,6 +13,9 @@ call plug#begin()
 
 "	### Fancing starting page ###"
 	Plug 'mhinz/vim-startify'
+
+"	### Auto Complete ###:"
+	Plug 'vim-scripts/AutoComplPop'
 
 "	### NerdTree with icons ###"
 	Plug 'preservim/nerdtree'
@@ -46,7 +50,11 @@ if has('termguicolors')
 endif
 
 let g:seoul256_light_background = 253
-colo seoul256-light
+colorscheme seoul256-light
+
+"	### AutoComplPop Utils ###"
+set completeopt=menuone
+set shortmess+=c
 
 "	### Bookmakrs for fancy starter ###"
 let g:startify_bookmarks = [
@@ -89,10 +97,16 @@ let	mapleader=" "
 "	### auto close nerdtree ###"
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
+"	### Maping of the navigation folder ###"
+nnoremap <leader>id :IndentGuidesToggle<CR>
+
+"	### Maping of the navigation folder ###"
+nnoremap <leader>pv :Ex<CR>
+
 "	### maping of nerdtree ###"
 nnoremap <leader>t :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
-nnoremap <Leader>r :NERDTreeRefreshRoot
+nnoremap <Leader>r :NERDTreeRefreshRoot<CR>
 
 "	### Devicone seting ####"
 set encoding=UTF-8
