@@ -1,9 +1,16 @@
+"	### Set Utils ###"
+
+let g:polyglot_disabled = ['markdown']
 
 set number
 set mouse=a
 set noswapfile
 set nocompatible
-set ts=4
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set autoindent
+set smartindent
 
 "	### File for info to the fancy starter ###"
 set viminfo='100,n$HOME/.vim/files/info/viminfo
@@ -14,8 +21,8 @@ call plug#begin()
 "	### Fancing starting page ###"
 	Plug 'mhinz/vim-startify'
 
-"	### Auto Complete ###:"
-	Plug 'vim-scripts/AutoComplPop'
+"	### Conquer Of Completion ###"
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "	### NerdTree with icons ###"
 	Plug 'preservim/nerdtree'
@@ -51,10 +58,6 @@ endif
 
 let g:seoul256_light_background = 253
 colorscheme seoul256-light
-
-"	### AutoComplPop Utils ###"
-set completeopt=menuone
-set shortmess+=c
 
 "	### Bookmakrs for fancy starter ###"
 let g:startify_bookmarks = [
@@ -106,10 +109,53 @@ nnoremap <leader>pv :Ex<CR>
 "	### maping of nerdtree ###"
 nnoremap <leader>t :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
-nnoremap <Leader>r :NERDTreeRefreshRoot<CR>
+nnoremap <leader>r :NERDTreeRefreshRoot<CR>
+
+nnoremap <leader>cc :set colorcolumn=80<cr>
+nnoremap <leader>ncc :set colorcolumn-=80<cr>
 
 "	### Devicone seting ####"
 set encoding=UTF-8
 
 "	### maping of fzf ###"
+nnoremap <leader>ff :FZF<CR>
+
+"	### Conquer Of Completion ###"
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+	set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+" Highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+	if CocAction('hasProvider', 'hover')
+		call CocActionAsync('doHover')
+	else
+		call feedkeys('K', 'in')
+	endif
+endfunction
+
+let g:coc_global_extensions = [
+  \ 'coc-tsserver',
+  \ 'coc-prettier', 
+  \ 'coc-clangd',
+  \ 'coc-cmake',
+  \ 'coc-docker',
+  \ 'coc-pyright',
+  \ ]
+
+nnoremap <leader>cm :CocList<CR>
 nnoremap <leader>ff :FZF<CR>
