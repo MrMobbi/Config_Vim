@@ -26,12 +26,7 @@ These commands are primarily used in Normal Mode, so remember to press 'ESC' bef
 ## Word Movements
 - **w:** Move to the start of the next word.
 - **b:** Move to the start of the current/previous word.
-
-## Line Movements
-- **0:** Move to the start of the line.
-- **^:** Move to the first non-blank character.
-- **$:** Move to the end of the line.
-- **%:** Jump to the matching brace or bracket.
+- **e:** Move to the end of the next word.
 
 ## Screen Movements
 - **H:** Move to the top of the screen.
@@ -83,11 +78,6 @@ These commands are primarily used in Normal Mode, so remember to press 'ESC' bef
 - **zf:** Fold at current indent level.
 - **za:** Toggle current fold.
 
-## NERDTree
-- **<leader>t:** Focus NERDTree (C means CTRL).
-- **<C-n>:** Toggle NERDTree.
-- **<leader>:** A key specified in .vimrc, my leader key is a comma ','.
-
 ## Buffers
 - **gb:** List buffers.
 - **bd:** Delete current buffer.
@@ -103,3 +93,12 @@ These commands are primarily used in Normal Mode, so remember to press 'ESC' bef
 - **:q:** Quit without saving.
 - **:q!:** Force quit without saving.
 - **:wq:** Save and quit.
+
+## NERDTree
+- **<leader>t:** Open NERDTree (C means CTRL).
+- **<leader>f:** Open NERDTree and put the cursor on the file that we are in.
+- **<leader>r:** Refresh the NERDTree to see new or deleted files
+- **<leader>:** A key specified in .vimrc, my leader key is a comma 'space'.
+
+## Fuzzy Finder
+- **<leader>ff:** Open Fuzzy finder search
