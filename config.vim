@@ -1,5 +1,6 @@
 " ============================================================================
 "                                  ~/.vimrc
+"                         Clean structure + visible comments
 " ============================================================================
 
 " ----------------------------------------------------------------------------
@@ -7,7 +8,7 @@
 " ----------------------------------------------------------------------------
 
 " Disable specific languages from vim-polyglot
-let g:polyglot_disabled = ['markdown']
+let g:polyglot_disabled = ['markdown', 'csv']
 
 syntax on
 set nocompatible
@@ -63,13 +64,16 @@ Plug 'tpope/vim-surround'
 Plug 'sheerun/vim-polyglot'
 Plug 'vim-syntastic/syntastic'
 
+" CSV syntaxys
+Plug 'chrisbra/csv.vim'
+
 " 42 header
 Plug 'pbondoer/vim-42header'
 
 " Git
 Plug 'tpope/vim-fugitive'
 
-" Extra colorschemes (was incorrectly placed after plug#end in your vimrc)
+" Extra colorschemes 
 Plug 'flazz/vim-colorschemes'
 
 call plug#end()
