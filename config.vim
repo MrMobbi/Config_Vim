@@ -1,161 +1,238 @@
-"	### Set Utils ###"
+" ============================================================================
+"                                  ~/.vimrc
+"                         Clean structure + visible comments
+" ============================================================================
 
+" ----------------------------------------------------------------------------
+" 1) BASIC SETTINGS
+" ----------------------------------------------------------------------------
+
+" Disable specific languages from vim-polyglot
 let g:polyglot_disabled = ['markdown']
+
+syntax on
+set nocompatible
+filetype plugin indent on
 
 set number
 set mouse=a
 set noswapfile
-set nocompatible
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set autoindent
 set smartindent
+set encoding=UTF-8
 
-"	### File for info to the fancy starter ###"
+" Store viminfo in a custom location
 set viminfo='100,n$HOME/.vim/files/info/viminfo
 
-"	### Plugin ####"
+" Leader key = Space
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
+" ----------------------------------------------------------------------------
+" 2) PLUGINS (vim-plug)
+" ----------------------------------------------------------------------------
 call plug#begin()
 
-"	### Fancing starting page ###"
-	Plug 'mhinz/vim-startify'
+" Start screen
+Plug 'mhinz/vim-startify'
 
-"	### Conquer Of Completion ###"
-	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Completion / LSP
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-"	### NerdTree with icons ###"
-	Plug 'preservim/nerdtree'
-	Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-	Plug 'ryanoasis/vim-devicons'
+" File tree
+Plug 'preservim/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
 
-"	### Sercher for files ###"
-	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
+" Fuzzy finder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
-" 	### Color scheme and vim airline ###"
-	Plug 'jonathanfilip/vim-lucius'
-	Plug 'junegunn/seoul256.vim'
-	Plug 'vim-airline/vim-airline'
-	Plug 'vim-airline/vim-airline-themes'
-	Plug 'flazz/vim-colorschemes'
+" Theme + statusline
+Plug 'sainnhe/vim-color-forest-night'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-"	### Syntax color for different texts ###
-	Plug 'tpope/vim-surround'
-	Plug 'sheerun/vim-polyglot'
+" Parentheses rainbow
+Plug 'kien/rainbow_parentheses.vim'
 
-"	### Header 42 ###"
-	Plug 'pbondoer/vim-42header'
+" Editing / syntax helpers
+Plug 'tpope/vim-surround'
+Plug 'sheerun/vim-polyglot'
+Plug 'vim-syntastic/syntastic'
 
-"	### Geter for git to vim ###"
-	Plug 'tpope/vim-fugitive'
+" 42 header
+Plug 'pbondoer/vim-42header'
+
+" Git
+Plug 'tpope/vim-fugitive'
+
+" Extra colorschemes (was incorrectly placed after plug#end in your vimrc)
+Plug 'flazz/vim-colorschemes'
+
 call plug#end()
 
-"	### Vim-theme ###"
+" ----------------------------------------------------------------------------
+" 3) STARTIFY CONFIG
+" ----------------------------------------------------------------------------
+let g:startify_bookmarks = [
+      \ { 'z' : '~/.zshrc' },
+      \ { 'v' : '~/.vimrc' },
+      \ { 'i' : '~/.config/i3/config' },
+      \ ]
+
+let g:startify_lists = [
+      \ { 'header': ['  Bookmarks'],                        'type': 'bookmarks' },
+      \ { 'header': ['  Current Recent Use ' . getcwd()],   'type': 'dir' },
+      \ { 'header': ['  Recent Use'],                       'type': 'files' },
+      \ ]
+
+nnoremap <leader>st :Startify<CR>
+
+" ----------------------------------------------------------------------------
+" 4) THEME CONFIG (Everforest)
+" ----------------------------------------------------------------------------
 if has('termguicolors')
-	set termguicolors
+  set termguicolors
 endif
 
-let g:seoul256_light_background = 253
-colorscheme seoul256-light
+set background=dark
 
-"	### Bookmakrs for fancy starter ###"
-let g:startify_bookmarks = [
-		\ { 'z' : '~/.zshrc' },
-		\ { 'v' : '~/.vimrc' },
-		\ ]
+" Everforest settings
+let g:everforest_background = 'medium'
+let g:everforest_better_performance = 1
+let g:everforest_transparent_background = 1
 
-"	### Lister for fancy starter ###"
-function! s:list_commits()
-	let git = 'git -C ~/repo'
-	let commits = systemlist(git .'log --oneline | head -n10')
-	let git = 'G'. git[1:]
-	return map(commits, '{"line": matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
-endfunction
-
-let g:startify_list = [
-		\ { 'header': ['	Bookmarks'],		'type': 'bookmarks' },
-		\ { 'header': ['	MRU'],				'type': 'files' },
-		\ { 'header': ['	MRU'. getcwd()],	'type': 'dir' },
-		\ { 'header': ['	Commits'], 			'type': function('s:list_commits') },
-		\ ]
-
-"	#### Vim-airline ###"
+colorscheme everforest
+" ----------------------------------------------------------------------------
+" 5) AIRLINE
+" ----------------------------------------------------------------------------
 set ttimeoutlen=50
-let g:airline_theme='tomorrow'
-let g:airline#extensions#branch#enabled=1
+let g:airline_theme = 'everforest'
+let g:airline#extensions#branch#enabled = 1
 
-"	### UserLog for header ###"
+" ----------------------------------------------------------------------------
+" 6) RAINBOW PARENTHESES
+" ----------------------------------------------------------------------------
+let g:rbpt_colorpairs = [
+      \ ['brown',       'RoyalBlue3'],
+      \ ['Darkblue',    'SeaGreen3'],
+      \ ['darkgray',    'DarkOrchid3'],
+      \ ['darkgreen',   'firebrick3'],
+      \ ['darkcyan',    'RoyalBlue3'],
+      \ ['darkred',     'SeaGreen3'],
+      \ ['darkmagenta', 'DarkOrchid3'],
+      \ ['brown',       'firebrick3'],
+      \ ['gray',        'RoyalBlue3'],
+      \ ['black',       'SeaGreen3'],
+      \ ['darkmagenta', 'DarkOrchid3'],
+      \ ['Darkblue',    'firebrick3'],
+      \ ['darkgreen',   'RoyalBlue3'],
+      \ ['darkcyan',    'SeaGreen3'],
+      \ ['darkred',     'DarkOrchid3'],
+      \ ['red',         'firebrick3'],
+      \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+
+nnoremap <leader>po :RainbowParenthesesToggle<CR>
+
+" Always on
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+" ----------------------------------------------------------------------------
+" 7) 42 HEADER USER INFO
+" ----------------------------------------------------------------------------
 let g:user42 = 'mjulliat'
 let g:mail42 = 'mjulliat@student.42.ch'
 
-"	### Space bar as <leader> ###"
-nnoremap <SPACE> <Nop>
-let	mapleader=" "
+" ----------------------------------------------------------------------------
+" 8) NERDTREE
+" ----------------------------------------------------------------------------
+" Auto-open NERDTree when no file is passed
+autocmd VimEnter * if argc() == 0 | NERDTree | wincmd p | endif
 
-"	### auto start nerdtree ###"
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+" Show hidden files
+let NERDTreeShowHidden=1
 
-"	### auto close nerdtree ###"
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" Auto-close vim if the only window left is NERDTree
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1
+      \ && exists('b:NERDTree') && b:NERDTree.isTabTree()
+      \ | quit | endif
 
-"	### Maping of the navigation folder ###"
-nnoremap <leader>id :IndentGuidesToggle<CR>
-
-"	### Maping of the navigation folder ###"
-nnoremap <leader>pv :Ex<CR>
-
-"	### maping of nerdtree ###"
+" NERDTree mappings
 nnoremap <leader>t :NERDTreeToggle<CR>
 nnoremap <leader>f :NERDTreeFind<CR>
+nnoremap <leader>y :NERDTreeFocus<CR>
 nnoremap <leader>r :NERDTreeRefreshRoot<CR>
 
-nnoremap <leader>cc :set colorcolumn=80<cr>
-nnoremap <leader>ncc :set colorcolumn-=80<cr>
+" ----------------------------------------------------------------------------
+" 9) GENERAL MAPPINGS
+" ----------------------------------------------------------------------------
+nnoremap <leader>pv :Ex<CR>
+nnoremap <leader>s  :source %<CR>
 
-"	### Devicone seting ####"
-set encoding=UTF-8
+" Colorcolumn toggles
+nnoremap <leader>cc  :set colorcolumn=80<CR>
+nnoremap <leader>ncc :set colorcolumn-=80<CR>
 
-"	### maping of fzf ###"
+" ----------------------------------------------------------------------------
+" 10) FZF
+" ----------------------------------------------------------------------------
 nnoremap <leader>ff :FZF<CR>
 
-"	### Conquer Of Completion ###"
-" TextEdit might fail if hidden is not set.
+" ----------------------------------------------------------------------------
+" 11) GIT (FUGITIVE)
+" ----------------------------------------------------------------------------
+nnoremap <leader>ga :Git add .<CR>
+
+" ----------------------------------------------------------------------------
+" 12) COC (Conquer of Completion)
+" ----------------------------------------------------------------------------
 set hidden
-
-" Some servers have issues with backup files, see #649.
 set nobackup
-	set nowritebackup
-
-" Give more space for displaying messages.
+set nowritebackup
 set cmdheight=2
 
-" Make <CR> to accept selected completion item or notify coc.nvim to format
+" Completion behavior
+set completeopt-=preview
+autocmd CursorMovedI * if pumvisible() == 0 | pclose | endif
+autocmd InsertLeave  * if pumvisible() == 0 | pclose | endif
+
+" Enter confirms selection in Coc menu
 inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-" Highlight the symbol and its references when holding the cursor
+" Highlight symbol references on hold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Use K to show documentation in preview window
+" K shows hover documentation
 nnoremap <silent> K :call ShowDocumentation()<CR>
-
 function! ShowDocumentation()
-	if CocAction('hasProvider', 'hover')
-		call CocActionAsync('doHover')
-	else
-		call feedkeys('K', 'in')
-	endif
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
 endfunction
 
+
 let g:coc_global_extensions = [
-  \ 'coc-tsserver',
-  \ 'coc-prettier', 
-  \ 'coc-clangd',
-  \ 'coc-cmake',
-  \ 'coc-docker',
-  \ 'coc-pyright',
-  \ ]
+      \ 'coc-tsserver',
+      \ 'coc-prettier',
+      \ 'coc-clangd',
+      \ 'coc-cmake',
+      \ 'coc-sh',
+      \ 'coc-docker',
+      \ 'coc-pyright',
+      \ 'coc-terraform',
+      \ 'coc-yaml',
+      \ 'coc-solargraph',
+      \ ]
 
 nnoremap <leader>cm :CocList<CR>
-nnoremap <leader>ff :FZF<CR>
