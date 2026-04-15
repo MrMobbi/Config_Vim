@@ -21,6 +21,7 @@ set shiftwidth=4
 set softtabstop=4
 set autoindent
 set smartindent
+set hidden
 set encoding=UTF-8
 
 " Search highlight
@@ -75,6 +76,7 @@ Plug 'pbondoer/vim-42header'
 
 " Git
 Plug 'tpope/vim-fugitive'
+Plug 'zivyangll/git-blame.vim'
 
 " Extra colorschemes 
 Plug 'flazz/vim-colorschemes'
@@ -121,6 +123,7 @@ colorscheme everforest
 set ttimeoutlen=50
 let g:airline_theme = 'everforest'
 let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
 
 " ----------------------------------------------------------------------------
 " 6) RAINBOW PARENTHESES
@@ -213,6 +216,7 @@ nnoremap <leader>rw :Rg <C-R><C-W><CR>
 " 11) GIT (FUGITIVE)
 " ----------------------------------------------------------------------------
 nnoremap <leader>ga :Git add .<CR>
+nnoremap <Leader>gb :<C-u>call gitblame#echo()<CR>
 
 " ----------------------------------------------------------------------------
 " 12) COC (Conquer of Completion)
@@ -260,7 +264,21 @@ let g:coc_global_extensions = [
 nnoremap <leader>cm :CocList<CR>
 
 " ----------------------------------------------------------------------------
-" 12) Cheat Sheet
+" 13) Cheat Sheet
 " ----------------------------------------------------------------------------
 
 nnoremap <leader>cs :CheatSheet<CR>
+"
+" ----------------------------------------------------------------------------
+" 14) Buffer
+" ----------------------------------------------------------------------------
+nnoremap <leader><Tab> :b#<CR>      " toggle last buffer
+nnoremap <leader>bn :bn<CR>         " next buffer
+nnoremap <leader>bp :bp<CR>         " previous buffer
+nnoremap <leader>bd :bd<CR>         " delete buffer
+
+nnoremap <leader>bb :Buffers<CR>
+nnoremap <leader>1 :b1<CR>
+nnoremap <leader>2 :b2<CR>
+nnoremap <leader>3 :b3<CR>
+nnoremap <leader>4 :b4<CR>
