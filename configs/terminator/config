@@ -1,0 +1,44 @@
+[global_config]
+  inactive_color_offset = 1.0
+  enabled_plugins = InsertTermName, LaunchpadBugURLHandler, LaunchpadCodeURLHandler, APTURLHandler
+[keybindings]
+  go_next = <Alt>Tab
+  switch_to_tab_1 = <Alt>1
+  switch_to_tab_2 = <Alt>2
+  switch_to_tab_3 = <Alt>3
+  switch_to_tab_4 = <Alt>4
+  switch_to_tab_5 = <Alt>5
+  switch_to_tab_6 = <Alt>6
+  switch_to_tab_7 = <Alt>7
+  switch_to_tab_8 = <Alt>8
+  switch_to_tab_9 = <Alt>9
+[profiles]
+  [[default]]
+    background_darkness = 0.8
+    background_type = transparent
+    font = JetBrainsMonoNL Nerd Font Propo Semi-Bold Italic 25
+    palette = "#1c1c1c:#af5f5f:#5f875f:#87875f:#5f87af:#5f5f87:#5f8787:#6c6c6c:#444444:#ff8700:#87af87:#ffffaf:#87afd7:#8787af:#5fafaf:#ffffff"
+    use_system_font = False
+
+  [[Aprentice Office]]
+    background_darkness = 0.8
+    background_type = transparent
+    font = JetBrainsMonoNL Nerd Font Propo Semi-Bold Italic 25
+    palette = "#1c1c1c:#af5f5f:#5f875f:#87875f:#5f87af:#5f5f87:#5f8787:#6c6c6c:#444444:#ff8700:#87af87:#ffffaf:#87afd7:#8787af:#5fafaf:#ffffff"
+    use_system_font = False
+  [[Aprentice Home Office]]
+    background_darkness = 0.8
+    background_type = transparent
+    font = JetBrainsMonoNL Nerd Font Propo Semi-Bold Italic 10
+    palette = "#1c1c1c:#af5f5f:#5f875f:#87875f:#5f87af:#5f5f87:#5f8787:#6c6c6c:#444444:#ff8700:#87af87:#ffffaf:#87afd7:#8787af:#5fafaf:#ffffff"
+    use_system_font = False
+[layouts]
+  [[default2]]
+    [[[window0]]]
+      type = Window
+      parent = ""
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+      profile = default
+[plugins]
