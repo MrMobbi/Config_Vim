@@ -1,8 +1,0 @@
-{
-	"clangd.arguments": [ 
-		"--header-insertion=never",
-		"--function-arg-placeholders=0",
-		],
-	"inlayHint.enable": false,
-	"suggest.insertMode": "none",
-}
