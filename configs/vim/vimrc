@@ -1,4 +1,3 @@
-cat .vimrc
 " ============================================================================
 "                                  ~/.vimrc
 " ============================================================================
@@ -10,23 +9,31 @@ cat .vimrc
 " Disable specific languages from vim-polyglot
 let g:polyglot_disabled = ['markdown', 'csv']
 
-syntax on
 set nocompatible
 filetype plugin indent on
+syntax on
 
-set number
+set autoindent
+set diffopt+=vertical
+set encoding=utf-8
+set hidden
 set mouse=a
 set noswapfile
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set numberwidth=4
+set number
+set relativenumber
 set scrolloff=10
+set shiftwidth=4
 set sidescrolloff=10
-set autoindent
 set smartindent
-set hidden
-set encoding=UTF-8
-set diffopt+=vertical
+set smartcase
+set softtabstop=4
+set tabstop=4
+
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undo
+endif
 
 " Search highlight
 set hlsearch
@@ -38,6 +45,14 @@ set viminfo='100,n$HOME/.vim/files/info/viminfo
 " Leader key = Space
 nnoremap <SPACE> <Nop>
 let mapleader=" "
+let maplocalleader=" "
+
+" Load config
+source ~/.vim/config/mapping.vim
+source ~/.vim/config/coc.vim
+source ~/.vim/config/nerdtree.vim
+source ~/.vim/config/general.vim
+source ~/.vim/config/autocmd.vim
 
 " ----------------------------------------------------------------------------
 " 2) PLUGINS (vim-plug)
@@ -46,6 +61,9 @@ call plug#begin()
 
 " Start screen
 Plug 'mhinz/vim-startify'
+
+" Agent IA
+Plug 'Exafunction/codeium.vim'
 
 " Completion / LSP
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -103,6 +121,7 @@ let g:startify_bookmarks = [
       \ { 'i' : '~/.config/i3/config' },
       \ { 't' : '~/.config/terminator/config' },
       \ { 'C' : '~/.vim/plugin/cheatsheet.vim' },
+      \ { 'm' : '~/.vim/config' },
       \ ]
 
 let g:startify_lists = [
@@ -128,12 +147,31 @@ let g:everforest_better_performance = 1
 let g:everforest_transparent_background = 1
 
 colorscheme everforest
+
 " ----------------------------------------------------------------------------
 " 5) AIRLINE
 " ----------------------------------------------------------------------------
 set ttimeoutlen=50
 let g:airline_theme = 'everforest'
 let g:airline#extensions#branch#enabled = 1
+
+" Show only the filename, not the full path
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+set noshowmode
+
+" Filename only
+let g:airline_section_c = '%t'
+
+" Remove file encoding / fileformat
+let g:airline_section_y = ''
+
+" Remove filetype (json)
+let g:airline_section_x = ''
+
+let g:airline_section_c = '%t%m'
+
+" Optional: remove the warning/error section that may show "{...} ON"
+let g:airline_section_warning = ''
 let g:airline#extensions#tabline#enabled = 1
 
 " ----------------------------------------------------------------------------
@@ -175,77 +213,14 @@ let g:user42 = 'mjulliat'
 let g:mail42 = 'mjulliat@student.42.ch'
 
 " ----------------------------------------------------------------------------
-" 8) NERDTREE
-" ----------------------------------------------------------------------------
-" Auto-open NERDTree when no file is passed
-autocmd VimEnter * if argc() == 0 | NERDTree | wincmd p | endif
-
-" Show hidden files
-let NERDTreeShowHidden=1
-
-" Auto-close vim if the only window left is NERDTree
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1
-      \ && exists('b:NERDTree') && b:NERDTree.isTabTree()
-      \ | quit | endif
-
-" NERDTree mappings
-nnoremap <leader>t :NERDTreeToggle<CR>
-nnoremap <leader>f :NERDTreeFind<CR>
-nnoremap <leader>y :NERDTreeFocus<CR>
-nnoremap <leader>rr :NERDTreeRefreshRoot<CR>
-
-" ----------------------------------------------------------------------------
-" 9) GENERAL MAPPINGS
-" ----------------------------------------------------------------------------
-nnoremap <leader>pv :Ex<CR>
-nnoremap <leader>s  :source %<CR>
-
-" Colorcolumn toggles
-nnoremap <leader>cc  :set colorcolumn=80<CR>
-nnoremap <leader>ncc :set colorcolumn-=80<CR>
-
-" Usefull remaping
-nnoremap <S-l> $
-nnoremap <S-H> ^
-nnoremap <S-j> G
-nnoremap <S-k> gg
-
-" Uppercase or Lowercase a word in normal mode
-nnoremap <leader>U viwUe
-nnoremap <leader>u viwue
-
-" Move one up or down
-nnoremap - :m +1<CR>
-nnoremap _ :m -2<CR>
-
-" Vimrc tricks
-nnoremap <leader>ev :sp $MYVIMRC<CR>
-nnoremap <Up> :echo "Not Up anymore"<CR>
-nnoremap <Down> :echo "Not Down anymore"<CR>
-nnoremap <Left> :echo "Not Left anymore"<CR>
-nnoremap <Right> :echo "Not Right anymore"<CR>
-
-" Insersion mapings
-inoremap jk <esc>
-inoremap <esc> <esc>:echo "Use jk to escape now"<CR>a
-
-" Trim whitsapce when a file is saved
-function! TrimWhitespace()
-  if &modifiable && !&binary
-    let view = winsaveview()
-    %s/\s\+$//e
-    call winrestview(view)
-  endif
-endfunction
-
-autocmd BufWritePre * call TrimWhitespace()
-
-" ----------------------------------------------------------------------------
-" 10) FZF
+" 8) FZF
 " ----------------------------------------------------------------------------
 
 " Auto clean the highlight buffer
+augroup fzf
+autocmd!
 autocmd BufEnter,BufWinEnter * if &buftype == '' | let @/ = '' | endif
+augroup END
 
 nnoremap <leader>ff :FZF<CR>
 nnoremap <leader>rg :Rg<CR>
@@ -264,77 +239,18 @@ command! -bang -nargs=* Rg
 nnoremap <leader>rw :Rg <C-R><C-W><CR>
 
 " ----------------------------------------------------------------------------
-" 11) GIT (FUGITIVE)
+" 9) GIT (FUGITIVE)
 " ----------------------------------------------------------------------------
+
 nnoremap <leader>ga :Git add .<CR>
 nnoremap <Leader>gb :<C-u>call gitblame#echo()<CR>
 
 " ----------------------------------------------------------------------------
-" 12) COC (Conquer of Completion)
-" ----------------------------------------------------------------------------
-set hidden
-set nobackup
-set nowritebackup
-set cmdheight=2
-
-" Completion behavior
-set completeopt-=preview
-autocmd CursorMovedI * if pumvisible() == 0 | pclose | endif
-autocmd InsertLeave  * if pumvisible() == 0 | pclose | endif
-
-" Enter confirms selection in Coc menu
-inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
-
-" Highlight symbol references on hold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" K shows hover documentation
-nnoremap <C-h> :call ShowDocumentation()<CR>
-function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
-
-
-let g:coc_global_extensions = [
-      \ 'coc-tsserver',
-      \ 'coc-prettier',
-      \ 'coc-clangd',
-      \ 'coc-cmake',
-      \ 'coc-sh',
-      \ 'coc-docker',
-      \ 'coc-pyright',
-      \ 'coc-terraform',
-      \ 'coc-yaml',
-      \ 'coc-lua',
-      \ 'coc-solargraph',
-      \ ]
-
-nnoremap <leader>cm :CocList<CR>
-
-" ----------------------------------------------------------------------------
-" 13) Cheat Sheet
+" 10) CODEIUM
 " ----------------------------------------------------------------------------
 
-nnoremap <leader>cs :CheatSheet<CR>
+let g:codeium_disable_bindings = 1
 
-" ----------------------------------------------------------------------------
-" 14) Buffer
-" ----------------------------------------------------------------------------
-nnoremap <leader><Tab> :bn<CR>      " next buffer
-nnoremap <leader>bp :bp<CR>         " previous buffer
-nnoremap <leader>bd :Bdelete<CR>    " delete buffer
-
-nnoremap <leader>bb :Buffers<CR>
-nnoremap <leader>1 :b1<CR>
-nnoremap <leader>2 :b2<CR>
-nnoremap <leader>3 :b3<CR>
-nnoremap <leader>5 :b5<CR>
-nnoremap <leader>6 :b6<CR>
-nnoremap <leader>7 :b7<CR>
-nnoremap <leader>8 :b8<CR>
-nnoremap <leader>9 :b9<CR>
-
+inoremap <silent><script><expr> <C-J> codeium#Accept()
+nnoremap <leader>ce :CodeiumEnable<CR>
+nnoremap <leader>cd :CodeiumDisable<CR>
